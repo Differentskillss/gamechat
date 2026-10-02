@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Игровой Чат</title>
+    <!-- Подключаем внешний файл стилей CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="messages" id="msgBox"></div>
+        <div class="input-container" id="fakeInput">
+            <span class="input-text" id="inputText"></span>
+            <span class="cursor" id="inputCursor" style="display: none;"></span>
+            <span class="placeholder-text" id="placeholder">Нажмите для ввода...</span>
+        </div>
+    </div>
+
+    <div class="custom-keyboard" id="keyboard">
+        <div class="keyboard-row">
+            <button class="key" onclick="press('Й')">Й</button><button class="key" onclick="press('Ц')">Ц</button><button class="key" onclick="press('У')">У</button><button class="key" onclick="press('К')">К</button><button class="key" onclick="press('Е')">Е</button><button class="key" onclick="press('Н')">Н</button><button class="key" onclick="press('Г')">Г</button><button class="key" onclick="press('Ш')">Ш</button><button class="key" onclick="press('Щ')">Щ</button><button class="key" onclick="press('З')">З</button><button class="key" onclick="press('Х')">Х</button><button class="key" onclick="press('Ъ')">Ъ</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="key" onclick="press('Ф')">Ф</button><button class="key" onclick="press('Ы')">Ы</button><button class="key" onclick="press('В')">В</button><button class="key" onclick="press('А')">А</button><button class="key" onclick="press('П')">П</button><button class="key" onclick="press('Р')">Р</button><button class="key" onclick="press('О')">О</button><button class="key" onclick="press('Л')">Л</button><button class="key" onclick="press('Д')">Д</button><button class="key" onclick="press('Ж')">Ж</button><button class="key" onclick="press('Э')">Э</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="key" onclick="press('Я')">Я</button><button class="key" onclick="press('Ч')">Ч</button><button class="key" onclick="press('С')">С</button><button class="key" onclick="press('М')">М</button><button class="key" onclick="press('И')">И</button><button class="key" onclick="press('Т')">Т</button><button class="key" onclick="press('Ь')">Ь</button><button class="key" onclick="press('Б')">Б</button><button class="key" onclick="press('Ю')">Ю</button>
+            <button class="key backspace" onclick="press('BACK')">✕</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="key voice" id="voiceBtn" onclick="toggleVoice()">🎙</button>
+            <button class="key space" onclick="press(' ')">пробел</button>
+            <button class="key send" onclick="press('SEND')">➔</button>
+        </div>
+    </div>
+
+    <!-- Подключаем внешние скрипты логики -->
+    <script src="script.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+</body>
+</html>

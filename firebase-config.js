@@ -1,15 +1,16 @@
 import { initializeApp } from "https://gstatic.com";
 import { getDatabase, ref, push, onChildAdded } from "https://gstatic.com";
 
+// Ваши новые конфигурации из региона europe-west1
 const firebaseConfig = {
-    apiKey: "AIzaSyDhElE3m7up-2mqYXTNur8zbfGB06PGZNg",
-    authDomain: "://firebaseapp.com",
-    databaseURL: "https://firebasedatabase.app",
-    projectId: "chatlitl",
-    storageBucket: "chatlitl.firebasestorage.app",
-    messagingSenderId: "243620230183",
-    appId: "1:243620230183:web:853c15960d21da3de6ca02",
-    measurementId: "G-E5XY1VCY5T"
+  apiKey: "AIzaSyCJstYm3EU160eBsgPN3JoTB0OmuHkzHAY",
+  authDomain: "chatgamee.firebaseapp.com",
+  databaseURL: "https://chatgamee-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chatgamee",
+  storageBucket: "chatgamee.firebasestorage.app",
+  messagingSenderId: "271860888911",
+  appId: "1:271860888911:web:fe5d20b115571df8b0c13a",
+  measurementId: "G-66BP31NH2F"
 };
 
 try {
@@ -27,9 +28,11 @@ try {
         const data = snapshot.val();
         const msg = document.createElement('div');
         const msgBox = document.getElementById('msgBox');
-        msg.innerHTML = `<b>${data.sender}:</b> ${data.message}`;
-        msgBox.appendChild(msg);
-        msgBox.scrollTop = msgBox.scrollHeight;
+        if (msgBox) {
+            msg.innerHTML = `<b>${data.sender}:</b> ${data.message}`;
+            msgBox.appendChild(msg);
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }
     });
 } catch(e) {
     console.log("Firebase offline");

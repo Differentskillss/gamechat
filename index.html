@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Игровой Чат</title>
-    <!-- Подключаем внешний файл стилей CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="chat-container">
+        <div class="chat-header">
+            <span id="myNick">Игрок</span>
+            <button class="nick-edit" onclick="openNickModal()">✎</button>
+        </div>
+
         <div class="messages" id="msgBox"></div>
+
         <div class="input-container" id="fakeInput">
             <span class="input-text" id="inputText"></span>
             <span class="cursor" id="inputCursor" style="display: none;"></span>
@@ -18,6 +23,29 @@
         </div>
     </div>
 
+    <!-- Модалка смены ника -->
+    <div class="modal-overlay" id="nickModal" style="display: none;">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-title">Смена ника</div>
+
+            <div class="modal-input-wrap" id="nickFakeInput">
+                <span class="input-text" id="nickText"></span>
+                <span class="cursor" id="nickCursor" style="display: none;"></span>
+                <span class="placeholder-text" id="nickPlaceholder">Введи ник...</span>
+            </div>
+
+            <div class="modal-counter">
+                <span id="nickCounter">0</span>/16
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeNickModal()">Отмена</button>
+                <button class="modal-btn confirm" onclick="confirmNick()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Виртуальная клавиатура -->
     <div class="custom-keyboard" id="keyboard">
         <div class="keyboard-row">
             <button class="key" onclick="press('Й')">Й</button><button class="key" onclick="press('Ц')">Ц</button><button class="key" onclick="press('У')">У</button><button class="key" onclick="press('К')">К</button><button class="key" onclick="press('Е')">Е</button><button class="key" onclick="press('Н')">Н</button><button class="key" onclick="press('Г')">Г</button><button class="key" onclick="press('Ш')">Ш</button><button class="key" onclick="press('Щ')">Щ</button><button class="key" onclick="press('З')">З</button><button class="key" onclick="press('Х')">Х</button><button class="key" onclick="press('Ъ')">Ъ</button>
@@ -30,14 +58,12 @@
             <button class="key backspace" onclick="press('BACK')">✕</button>
         </div>
         <div class="keyboard-row">
-            <button class="key voice" id="voiceBtn" onclick="toggleVoice()">🎙</button>
             <button class="key space" onclick="press(' ')">пробел</button>
-            <button class="key send" onclick="press('SEND')">➔</button>
+            <button class="key send" id="kbSendBtn" onclick="press('SEND')">➔</button>
         </div>
     </div>
 
-    <!-- Подключаем внешние скрипты логики -->
-    <script src="script.js"></script>
     <script type="module" src="firebase-config.js"></script>
+    <script src="script.js" defer></script>
 </body>
-</html>
+    </html>

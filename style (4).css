@@ -1,0 +1,144 @@
+body { 
+    margin: 0; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    background: transparent; 
+    color: white; 
+    overflow: hidden; 
+    user-select: none;
+}
+
+/* Компактное окно чата с 80% прозрачности */
+.chat-container { 
+    position: absolute; 
+    top: 8px; 
+    left: 8px; 
+    width: 260px; 
+    background: rgba(0, 0, 0, 0.2); 
+    border-radius: 10px; 
+    padding: 8px; 
+    box-sizing: border-box;
+}
+
+.messages { 
+    height: 110px; 
+    overflow-y: auto; 
+    margin-bottom: 6px; 
+    font-size: 13px; 
+    color: #ffffff; 
+}
+
+/* Прозрачное поле ввода */
+.input-container {
+    position: relative;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08); 
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    border-radius: 5px; 
+    padding: 6px; 
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-height: 30px;
+}
+
+.input-text {
+    color: white;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.placeholder-text {
+    color: rgba(255, 255, 255, 0.35); 
+    font-size: 13px;
+    position: absolute;
+    left: 6px;
+    pointer-events: none;
+}
+
+/* Мигающий курсор */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background-color: #0096ff;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Клавиатура с 80% прозрачности */
+.custom-keyboard { 
+    position: fixed; 
+    bottom: 4px; 
+    left: 1%; 
+    width: 98%; 
+    background: rgba(0, 0, 0, 0.2); 
+    backdrop-filter: blur(2px); 
+    padding: 4px; 
+    border-radius: 10px; 
+    display: none; 
+    flex-direction: column; 
+    gap: 4px; 
+    z-index: 9999; 
+    box-sizing: border-box;
+}
+
+.keyboard-row { display: flex; justify-content: center; gap: 3px; width: 100%; }
+
+/* Кнопки */
+.key { 
+    background: rgba(255, 255, 255, 0.08); 
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    color: rgba(255, 255, 255, 0.85); 
+    flex: 1; 
+    padding: 12px 0; 
+    border-radius: 5px; 
+    font-size: 15px; 
+    font-weight: 500;
+    text-align: center; 
+    outline: none;
+    transition: background 0.1s ease;
+}
+/* Анимация нажатия для обычных букв */
+.key:active { background: rgba(255, 255, 255, 0.25) !important; }
+
+/* Спецкнопки: стили по умолчанию */
+.key.backspace { flex: 1.5; background: rgba(255, 255, 255, 0.12); font-size: 16px; }
+.key.space { flex: 3.5; background: rgba(255, 255, 255, 0.1); font-size: 13px; color: rgba(255, 255, 255, 0.4); }
+.key.send { flex: 1.8; background: rgba(0, 150, 255, 0.35); font-size: 16px; color: white; }
+.key.voice { flex: 1.2; font-size: 16px; color: rgba(255, 255, 255, 0.6); }
+
+/* Анимация нажатия для ВСЕХ спецкнопок */
+.key.backspace:active { background: rgba(255, 255, 255, 0.3) !important; }
+.key.space:active { background: rgba(255, 255, 255, 0.3) !important; }
+.key.send:active { background: rgba(0, 150, 255, 0.6) !important; }
+.key.voice:active { background: rgba(255, 255, 255, 0.3) !important; }
+
+/* Анимация микрофона при записи */
+.key.voice.recording { 
+    background: rgba(255, 255, 255, 0.2); 
+    color: #0096ff;
+    animation: pulse 1.5s infinite;
+}
+.key.voice.recording:active { background: rgba(255, 255, 255, 0.4) !important; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Настройки для горизонтального экрана */
+@media (orientation: landscape) {
+    .chat-container { width: 200px; top: 6px; left: 6px; padding: 6px; }
+    .messages { height: 80px; font-size: 12px; }
+    .input-container { padding: 4px; min-height: 24px; }
+    .custom-keyboard { bottom: 2px; gap: 3px; padding: 3px; }
+    .key { padding: 7px 0; font-size: 13px; border-radius: 4px; }
+    .key.backspace, .key.send, .key.voice { font-size: 14px; }
+}

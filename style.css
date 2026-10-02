@@ -7,7 +7,7 @@ body {
     user-select: none;
 }
 
-/* Компактное окно чата с 80% прозрачности */
+/* ============ Чат ============ */
 .chat-container { 
     position: absolute; 
     top: 8px; 
@@ -19,16 +19,52 @@ body {
     box-sizing: border-box;
 }
 
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2px 6px 2px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 6px;
+}
+.chat-header #myNick {
+    font-weight: 500;
+    color: #0096ff;
+}
+.nick-edit {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+    padding: 0 4px;
+    cursor: pointer;
+}
+.nick-edit:active { color: #0096ff; }
+
+/* ============ Сообщения ============ */
 .messages { 
     height: 110px; 
     overflow-y: auto; 
     margin-bottom: 6px; 
     font-size: 13px; 
     color: #ffffff; 
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
+.messages::-webkit-scrollbar { width: 3px; }
+.messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
 
-/* Прозрачное поле ввода */
-.input-container {
+.msg { margin-bottom: 6px; line-height: 1.3; }
+.msg-head { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.75; gap: 6px; }
+.msg-head b { color: #0096ff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.msg-time { color: rgba(255,255,255,0.4); flex-shrink: 0; }
+.msg-body { font-size: 13px; word-break: break-word; padding-left: 2px; }
+
+/* ============ Поле ввода (используется в чате и в модалке) ============ */
+.input-container, .modal-input-wrap {
     position: relative;
     width: 100%;
     background: rgba(255, 255, 255, 0.08); 
@@ -47,6 +83,7 @@ body {
     font-size: 13px;
     white-space: nowrap;
     overflow: hidden;
+    max-width: 100%;
 }
 
 .placeholder-text {
@@ -57,7 +94,6 @@ body {
     pointer-events: none;
 }
 
-/* Мигающий курсор */
 .cursor {
     display: inline-block;
     width: 2px;
@@ -65,6 +101,7 @@ body {
     background-color: #0096ff;
     margin-left: 2px;
     animation: blink 1s infinite;
+    flex-shrink: 0;
 }
 
 @keyframes blink {
@@ -72,7 +109,17 @@ body {
     50% { opacity: 1; }
 }
 
-/* Клавиатура с 80% прозрачности */
+/* ============ Индикатор офлайна ============ */
+body.offline .input-container::after {
+    content: "нет сети";
+    position: absolute;
+    right: 6px;
+    font-size: 10px;
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+/* ============ Клавиатура ============ */
 .custom-keyboard { 
     position: fixed; 
     bottom: 4px; 
@@ -85,13 +132,12 @@ body {
     display: none; 
     flex-direction: column; 
     gap: 4px; 
-    z-index: 9999; 
+    z-index: 10001; /* ← было 9999 */
     box-sizing: border-box;
 }
 
 .keyboard-row { display: flex; justify-content: center; gap: 3px; width: 100%; }
 
-/* Кнопки */
 .key { 
     background: rgba(255, 255, 255, 0.08); 
     border: 1px solid rgba(255, 255, 255, 0.02);
@@ -104,41 +150,119 @@ body {
     text-align: center; 
     outline: none;
     transition: background 0.1s ease;
+    cursor: pointer;
+    font-family: inherit;
 }
-/* Анимация нажатия для обычных букв */
 .key:active { background: rgba(255, 255, 255, 0.25) !important; }
 
-/* Спецкнопки: стили по умолчанию */
 .key.backspace { flex: 1.5; background: rgba(255, 255, 255, 0.12); font-size: 16px; }
 .key.space { flex: 3.5; background: rgba(255, 255, 255, 0.1); font-size: 13px; color: rgba(255, 255, 255, 0.4); }
 .key.send { flex: 1.8; background: rgba(0, 150, 255, 0.35); font-size: 16px; color: white; }
-.key.voice { flex: 1.2; font-size: 16px; color: rgba(255, 255, 255, 0.6); }
 
-/* Анимация нажатия для ВСЕХ спецкнопок */
 .key.backspace:active { background: rgba(255, 255, 255, 0.3) !important; }
 .key.space:active { background: rgba(255, 255, 255, 0.3) !important; }
 .key.send:active { background: rgba(0, 150, 255, 0.6) !important; }
-.key.voice:active { background: rgba(255, 255, 255, 0.3) !important; }
 
-/* Анимация микрофона при записи */
-.key.voice.recording { 
-    background: rgba(255, 255, 255, 0.2); 
-    color: #0096ff;
-    animation: pulse 1.5s infinite;
+/* ============ Модалка ника ============ */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    display: flex;
+    align-items: flex-start;      /* ← было center */
+    justify-content: center;
+    padding-top: 12vh;             /* ← новое: окно уходит вверх */
+    box-sizing: border-box;
+    z-index: 10000;
+    animation: fadeIn 0.15s ease;
 }
-.key.voice.recording:active { background: rgba(255, 255, 255, 0.4) !important; }
 
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* Настройки для горизонтального экрана */
+.modal-box {
+    width: 260px;
+    /* 80% прозрачно = 20% непрозрачно */
+    background: rgba(20, 22, 28, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 14px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    animation: modalPop 0.18s ease;
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.94); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    letter-spacing: 0.3px;
+}
+
+.modal-counter {
+    text-align: right;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 4px;
+    margin-bottom: 12px;
+}
+.modal-counter.warn { color: #ff9b6b; }
+.modal-counter.max { color: #ff6b6b; font-weight: 600; }
+
+.modal-buttons { display: flex; gap: 6px; }
+
+.modal-btn {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.1s ease;
+}
+.modal-btn.cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+}
+.modal-btn.cancel:active { background: rgba(255, 255, 255, 0.22); }
+
+.modal-btn.confirm {
+    background: rgba(0, 150, 255, 0.35);
+    color: #ffffff;
+}
+.modal-btn.confirm:active { background: rgba(0, 150, 255, 0.6); }
+.modal-btn.confirm:disabled {
+    background: rgba(0, 150, 255, 0.1);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+}
+
+/* ============ Ландшафт ============ */
 @media (orientation: landscape) {
     .chat-container { width: 200px; top: 6px; left: 6px; padding: 6px; }
     .messages { height: 80px; font-size: 12px; }
-    .input-container { padding: 4px; min-height: 24px; }
+    .input-container, .modal-input-wrap { padding: 4px; min-height: 24px; }
     .custom-keyboard { bottom: 2px; gap: 3px; padding: 3px; }
     .key { padding: 7px 0; font-size: 13px; border-radius: 4px; }
-    .key.backspace, .key.send, .key.voice { font-size: 14px; }
+    .key.backspace, .key.send { font-size: 14px; }
+    .chat-header { padding-bottom: 4px; margin-bottom: 4px; }
+    .modal-box { width: 220px; padding: 10px;
+    .modal-overlay { padding-top: 6vh; }
+    }
 }

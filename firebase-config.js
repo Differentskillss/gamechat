@@ -1,11 +1,10 @@
 import { initializeApp } from "https://gstatic.com";
 import { getDatabase, ref, push, onChildAdded } from "https://gstatic.com";
 
-// Ваши новые конфигурации из региона europe-west1
 const firebaseConfig = {
   apiKey: "AIzaSyCJstYm3EU160eBsgPN3JoTB0OmuHkzHAY",
-  authDomain: "chatgamee.firebaseapp.com",
-  databaseURL: "https://chatgamee-default-rtdb.europe-west1.firebasedatabase.app",
+  authDomain: "://firebaseapp.com",
+  databaseURL: "https://firebasedatabase.app",
   projectId: "chatgamee",
   storageBucket: "chatgamee.firebasestorage.app",
   messagingSenderId: "271860888911",
@@ -19,7 +18,7 @@ try {
     const messagesRef = ref(db, 'chats/game_chat');
     const myName = "Игрок_" + Math.floor(Math.random() * 100);
 
-    // Связываем внешнюю отправку с основным скриптом клавиатуры
+    // Связываем отправку кнопок со скриптом базы данных
     window.sendCallback = function(text) {
         push(messagesRef, { sender: myName, message: text });
     };
@@ -35,5 +34,5 @@ try {
         }
     });
 } catch(e) {
-    console.log("Firebase offline");
+    console.log("Firebase offline mode");
 }
